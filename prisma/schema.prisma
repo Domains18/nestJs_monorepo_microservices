@@ -10,52 +10,65 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model organization {
-  id          Int          @id @default(autoincrement())
+  id           Int                @id @default(autoincrement())
+  name         String
+  description  String?
+  users        user[]
+  transactions mpesaTransaction[]
+  address      String?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  phone        String?
+}
+
+model user {
+  id             Int           @id @default(autoincrement())
+  email          String        @unique
+  password       String
+  firstName      String
+  lastName       String
+  organization   organization? @relation(fields: [organizationId], references: [id])
+  organizationId Int?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  deletedAt      DateTime?
+  roles          role[]
+}
+
+model role {
+  id          Int       @id @default(autoincrement())
   name        String
   description String?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   deletedAt   DateTime?
   users       user[]
 }
 
-
-model user {
-  id           Int           @id @default(autoincrement())
-  email        String        @unique
-  password     String
-  firstName    String
-  lastName     String
-  organization organization? @relation(fields: [organizationId], references: [id])
-  organizationId Int?
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  deletedAt    DateTime?
-  roles        role[]
-}
-
-model role {
-  id           Int           @id @default(autoincrement())
-  name         String
-  description  String?
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  deletedAt    DateTime?
-  users        user[]
-}
-
-
 model mpesaTransaction {
-  id           Int           @id @default(autoincrement())
-  MerchantRequestID String
-  CheckoutRequestID String
-  ResponseCode String
+  id                  Int           @id @default(autoincrement())
+  MerchantRequestID   String
+  CheckoutRequestID   String
+  ResponseCode        String
   ResponseDescription String
-  ResultCode String
-  ResultDesc String
-  Amount String
-  MpesaReceiptNumber String
-
+  ResultCode          String
+  ResultDesc          String
+  Amount              String
+  MpesaReceiptNumber  String
+  TransactionDate     String
+  PhoneNumber         String
+  organization        organization? @relation(fields: [id], references: [id])
 }
+
+// model vendors {
+//   id          Int       @id @default(autoincrement())
+//   name        String
+//   description String?
+//   createdAt   DateTime  @default(now())
+//   updatedAt   DateTime  @updatedAt
+//   deletedAt   DateTime?
+//   organization organization? @relation(fields: [id], references: [id])
+//   users       user[]
+//   transactions mpesaTransaction[]
+// }
