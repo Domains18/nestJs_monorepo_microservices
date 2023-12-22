@@ -1,0 +1,23 @@
+{
+  "CallbackMetadata": [
+    {
+      "Name": "Amount",
+      "Value": 1
+    },
+    {
+      "Name": "MpesaReceiptNumber",
+      "Value": "RLL3RGIL5L"
+    },
+    {
+      "Name": "Balance"
+    },
+    {
+      "Name": "TransactionDate",
+      "Value": 20231221102053
+    },
+    {
+      "Name": "PhoneNumber",
+      "Value": 254757387606
+    }
+  ]
+}

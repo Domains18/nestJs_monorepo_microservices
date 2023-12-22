@@ -2,57 +2,60 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "mysql"
-    url      = env("DATABASE_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
-model Admin {
-    id           Int    @id @default(autoincrement())
-    email        String @unique
-    username     String @unique
-    password     String
-    salt         String
-    sessionToken String @unique
-    createdAt    DateTime @default(now())
-    firstName   String
-    lastName    String
-    name       String
+
+model organization {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  deletedAt   DateTime?
+  users       user[]
 }
 
-model Transaction {
-    id                 Int      @id @default(autoincrement())
-    createdAt          DateTime @default(now())
-    updatedAt          DateTime @updatedAt
-    amount             Float
-    type               String
-    userId             Int
-    MerchantRequestID  String   @unique
-    ResultCode         String
-    ResultDesc         String
-    CheckoutRequestID  String
-    MpesaReceiptNumber String
-    Balance            String
-    PhoneNumber        String
-    AccountReference   String
+
+model user {
+  id           Int           @id @default(autoincrement())
+  email        String        @unique
+  password     String
+  firstName    String
+  lastName     String
+  organization organization? @relation(fields: [organizationId], references: [id])
+  organizationId Int?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  deletedAt    DateTime?
+  roles        role[]
 }
 
-model Sales {
-    id                 Int      @id @default(autoincrement())
-    createdAt          DateTime @default(now())
-    updatedAt          DateTime @updatedAt
-    amount             Float
-    type               String
-    userId             Int
-    MerchantRequestID  String   @unique
-    ResultCode         String
-    ResultDesc         String
-    CheckoutRequestID  String
-    MpesaReceiptNumber String
-    Balance            String
-    PhoneNumber        String
-    AccountReference   String
+model role {
+  id           Int           @id @default(autoincrement())
+  name         String
+  description  String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  deletedAt    DateTime?
+  users        user[]
+}
+
+
+model mpesaTransaction {
+  id           Int           @id @default(autoincrement())
+  MerchantRequestID String
+  CheckoutRequestID String
+  ResponseCode String
+  ResponseDescription String
+  ResultCode String
+  ResultDesc String
+  Amount String
+  MpesaReceiptNumber String
+
 }
