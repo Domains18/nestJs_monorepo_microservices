@@ -11,26 +11,33 @@ datasource db {
 }
 
 model Organization {
-  id      Int      @id @default(autoincrement())
-  name    String
-  users   User[]
-  vendors Vendor[]
+  id               Int      @id @default(autoincrement())
+  organizationName String   @unique
+  description      String
+  address          String
+  website          String
+  email            String
+  phone            String
+  logo             String
+  users            User[]
+  vendors          Vendor[]
 }
 
 model User {
   id             Int          @id @default(autoincrement())
   email          String       @unique
-  role           Role         @default(USER)
   organizationId Int
   organization   Organization @relation(fields: [organizationId], references: [id])
+  Vendor         Vendor[]
 }
 
 model Vendor {
   id             Int           @id @default(autoincrement())
-  name           String
+  vendorName     String
   organizationId Int
   organization   Organization  @relation(fields: [organizationId], references: [id])
   transactions   Transaction[]
+  admin          User          @relation(fields: [id], references: [id])
 }
 
 model Transaction {
@@ -38,9 +45,4 @@ model Transaction {
   amount   Float
   vendorId Int
   vendor   Vendor @relation(fields: [vendorId], references: [id])
-}
-
-enum Role {
-  USER
-  ADMIN
 }
