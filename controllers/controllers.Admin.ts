@@ -97,5 +97,4 @@ export async function getAdminBySesionToken(token:string, res: express.Response)
         res.sendStatus(500);
         console.log(error);
     }
-
 }
