@@ -24,22 +24,24 @@ model Organization {
 }
 
 model Admin {
-  id             Int          @id @default(autoincrement())
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  vendorName     String
-  organizationId Int
-  vendors        Vendor[]     @relation("AdminToVendor")
-  email          String       @unique
-  password       String
-  firstName      String
-  lastName       String
-  phone          String
-  username       String       @unique
+  id                  Int          @id @default(autoincrement())
+  organization        Organization @relation(fields: [organizationId], references: [id])
+  vendorName          String
+  organizationId      Int
+  vendors             Vendor[]     @relation("AdminToVendor")
+  email               String       @unique
+  password            String
+  firstName           String
+  lastName            String
+  phone               String      @unique
+  username            String       @unique
+  salt                String
+  sessionToken String  @unique
 }
 
 model Vendor {
   id             Int           @id @default(autoincrement())
-  vendorName     String @unique
+  vendorName     String        @unique
   organization   Organization  @relation(fields: [organizationId], references: [id])
   organizationId Int
   transactions   Transaction[]
@@ -48,16 +50,16 @@ model Vendor {
 }
 
 model Transaction {
-  id       Int    @id @default(autoincrement())
-  amount   Float
-  vendor   Vendor @relation(fields: [vendorId], references: [id])
-  vendorId Int
-  MerchantRequestID String
-  CheckoutRequestID String
-  ResultCode String
-  ResultDesc String
+  id                 Int    @id @default(autoincrement())
+  amount             Float
+  vendor             Vendor @relation(fields: [vendorId], references: [id])
+  vendorId           Int
+  MerchantRequestID  String
+  CheckoutRequestID  String
+  ResultCode         String
+  ResultDesc         String
   MpesaReceiptNumber String
-  TransactionDate String
-  PhoneNumber String
-  TransactionType String @default("Mpesa")
+  TransactionDate    String
+  PhoneNumber        String
+  TransactionType    String @default("Mpesa")
 }

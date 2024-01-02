@@ -76,3 +76,26 @@ export const updateAdmin = async (req: express.Request, res: express.Response) =
         console.log(error);
     }
 }
+
+
+export const deleteAdmin = async (req: express.Request, res: express.Response) => {
+    try {
+        const { id } = req.params;
+        const deletedAdmin = await prisma.admin.delete({ where: { id: Number(id) } });
+        return res.status(200).json({ deletedAdmin });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+export async function getAdminBySesionToken(token:string, res: express.Response) {
+    try {
+        const admin = await prisma.admin.findUnique({ where: { sessionToken: token } });
+        return admin;
+    } catch (error) {
+        res.sendStatus(500);
+        console.log(error);
+    }
+
+}
