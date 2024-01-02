@@ -91,7 +91,22 @@ export const deleteAdmin = async (req: express.Request, res: express.Response) =
 
 export async function getAdminBySesionToken(token:string, res: express.Response) {
     try {
-        const admin = await prisma.admin.findUnique({ where: { sessionToken: token } });
+        const admin = await prisma.admin.findUnique({
+            where: { sessionToken: token }, select: {
+                salt: true,
+                password: true,
+        } });
+        return admin;
+    } catch (error) {
+        res.sendStatus(500);
+        console.log(error);
+    }
+}
+
+
+export async function getAdminByEmail(email:string, res: express.Response) {
+    try {
+        const admin = await prisma.admin.findUnique({ where: { email } });
         return admin;
     } catch (error) {
         res.sendStatus(500);
