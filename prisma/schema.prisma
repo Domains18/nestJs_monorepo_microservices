@@ -19,16 +19,21 @@ model Organization {
   email            String
   phone            String
   logo             String
-  users            User[]
+  users            Admin[]
   vendors          Vendor[]
 }
 
-model User {
+model Admin {
   id             Int          @id @default(autoincrement())
-  email          String       @unique
   organizationId Int
   organization   Organization @relation(fields: [organizationId], references: [id])
   Vendor         Vendor[]
+  email          String       @unique
+  password       String
+  firstName      String
+  lastName       String
+  phone          String
+  username       String       @unique
 }
 
 model Vendor {
@@ -37,7 +42,8 @@ model Vendor {
   organizationId Int
   organization   Organization  @relation(fields: [organizationId], references: [id])
   transactions   Transaction[]
-  admin          User          @relation(fields: [id], references: [id])
+  admin          Admin         @relation(fields: [id], references: [id])
+  location       String
 }
 
 model Transaction {
@@ -45,4 +51,12 @@ model Transaction {
   amount   Float
   vendorId Int
   vendor   Vendor @relation(fields: [vendorId], references: [id])
+  MerchantRequestID String
+  CheckoutRequestID String
+  ResultCode String
+  ResultDesc String
+  MpesaReceiptNumber String
+  TransactionDate String
+  PhoneNumber String
+  TransactionType String @default("Mpesa")
 }
