@@ -25,9 +25,10 @@ model Organization {
 
 model Admin {
   id             Int          @id @default(autoincrement())
-  organizationId Int
   organization   Organization @relation(fields: [organizationId], references: [id])
-  Vendor         Vendor[]
+  vendorName     String
+  organizationId Int
+  vendors        Vendor[]     @relation("AdminToVendor")
   email          String       @unique
   password       String
   firstName      String
@@ -38,19 +39,19 @@ model Admin {
 
 model Vendor {
   id             Int           @id @default(autoincrement())
-  vendorName     String
-  organizationId Int
+  vendorName     String @unique
   organization   Organization  @relation(fields: [organizationId], references: [id])
+  organizationId Int
   transactions   Transaction[]
-  admin          Admin         @relation(fields: [id], references: [id])
+  admin          Admin[]       @relation("AdminToVendor")
   location       String
 }
 
 model Transaction {
   id       Int    @id @default(autoincrement())
   amount   Float
-  vendorId Int
   vendor   Vendor @relation(fields: [vendorId], references: [id])
+  vendorId Int
   MerchantRequestID String
   CheckoutRequestID String
   ResultCode String
