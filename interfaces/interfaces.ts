@@ -21,5 +21,7 @@ export interface Organization {
   email: string;
   phone: string;
   logo?: string;
- 
+  salt: string,
+  sessionToken: string,
+  password: string,
 }

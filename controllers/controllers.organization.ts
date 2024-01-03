@@ -3,14 +3,6 @@ import { prisma } from "../constants";
 // import { Organization } from "@prisma/client";
 import { Organization } from "../interfaces/interfaces";
 
-export const getOrganizations = async (req: Request, res: Response) => {
-  try {
-    const organizations = await prisma.organization.findMany();
-    res.status(200).json(organizations);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
 
 export async function getOrganizationById(req: Request, res: Response) {
   try {
@@ -24,15 +16,14 @@ export async function getOrganizationById(req: Request, res: Response) {
   }
 }
 
-export async function getOrganizationByName(req: Request, res: Response) {
+export async function getOrganizationByName(organizationName: string) {
   try {
-    const { organizationName } = req.body
     const organization = await prisma.organization.findUnique({
-      where: { organizationName },
+      where: { organizationName: organizationName },
     });
-    res.status(200).json(organization);
+    return organization;
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.log(error);
   }
 }
 
@@ -44,6 +35,9 @@ export async function createOrganization(organizationDetails: Organization, res:
     website,
     email,
     phone,
+    salt, 
+    sessionToken,
+    password,
     
   }: Organization = organizationDetails;
   try {
@@ -55,7 +49,10 @@ export async function createOrganization(organizationDetails: Organization, res:
         website,
         email,
         phone,
-      } as any
+        salt,
+        sessionToken,
+        password,
+      } as Organization,
     });
     organization && res.status(201).json(organization);
   } catch (error) {
@@ -85,7 +82,6 @@ export async function updateOrganization(req: Request, res: Response) {
         website,
         email,
         phone,
-        logo,
       },
     });
     organization && res.status(200).json(organization);
