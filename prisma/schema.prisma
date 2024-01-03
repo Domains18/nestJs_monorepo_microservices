@@ -16,9 +16,10 @@ model Organization {
   description      String
   address          String
   website          String
-  email            String
-  phone            String
-  logo             String
+  email            String  @unique
+  phone            String  @unique
+  salt             String 
+  sessionToken     String  @unique
   users            Admin[]
   vendors          Vendor[]
 }

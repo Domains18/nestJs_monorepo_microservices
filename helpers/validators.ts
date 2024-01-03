@@ -1,5 +1,5 @@
 import crypto from "crypto";
-
+const secret = process.env.SECRET
 export const validateEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
@@ -14,11 +14,6 @@ export async function generateRandomString(): Promise<string> {
   });
 }
 
-export async function authentication(salt:string, password:string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    crypto.pbkdf2(password, salt, 100000, 64, "sha512", (err, derivedKey) => {
-      if (err) reject(err);
-      resolve(derivedKey.toString("hex"));
-    });
-  });
+export  function authentication(salt: string, password: string) {
+  return crypto.createHmac('sha256', [salt, password].join('/')).update(secret).digest('hex');
 }
