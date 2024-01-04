@@ -20,7 +20,7 @@ export async function getOrganizationByName(organizationName: string) {
   try {
     const organization = await prisma.organization.findUnique({
       where: { organizationName: organizationName },
-    });
+    });gi
     return organization;
   } catch (error) {
     console.log(error);
