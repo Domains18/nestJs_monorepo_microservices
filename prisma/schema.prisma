@@ -21,7 +21,6 @@ model Organization {
   salt             String 
   sessionToken     String  @unique
   users            Admin[]
-  vendors          Vendor[]
 }
 
 model Admin {
@@ -29,7 +28,6 @@ model Admin {
   organization        Organization @relation(fields: [organizationId], references: [id])
   vendorName          String
   organizationId      Int
-  vendors             Vendor[]     @relation("AdminToVendor")
   email               String       @unique
   password            String
   firstName           String
@@ -40,20 +38,9 @@ model Admin {
   sessionToken String  @unique
 }
 
-model Vendor {
-  id             Int           @id @default(autoincrement())
-  vendorName     String        @unique
-  organization   Organization  @relation(fields: [organizationId], references: [id])
-  organizationId Int
-  transactions   Transaction[]
-  admin          Admin[]       @relation("AdminToVendor")
-  location       String
-}
-
 model Transaction {
   id                 Int    @id @default(autoincrement())
   amount             Float
-  vendor             Vendor @relation(fields: [vendorId], references: [id])
   vendorId           Int
   MerchantRequestID  String
   CheckoutRequestID  String
