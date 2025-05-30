@@ -9,7 +9,7 @@
     "emitDecoratorMetadata": true,
     "target": "es2021"
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts","../../../types/**/*.ts", "../../../types/proto/products"],
   "exclude": [
     "out-tsc",
     "dist",
