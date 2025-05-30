@@ -1,0 +1,26 @@
+{
+  "name": "@monorepo-nestjs/api-gateway-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "implicitDependencies": [
+      "@monorepo-nestjs/api-gateway"
+    ],
+    "targets": {
+      "e2e": {
+        "executor": "@nx/jest:jest",
+        "outputs": [
+          "{projectRoot}/test-output/jest/coverage"
+        ],
+        "options": {
+          "jestConfig": "apps/api-gateway-e2e/jest.config.ts",
+          "passWithNoTests": true
+        },
+        "dependsOn": [
+          "@monorepo-nestjs/api-gateway:build",
+          "@monorepo-nestjs/api-gateway:serve"
+        ]
+      }
+    }
+  }
+}
